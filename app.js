@@ -58,60 +58,7 @@ app.put('/update_bug',(req,res)=>{
             res.send(result)
         })
 })
-// Post data from ui
-/*app.post('/addData', (req,res) => {
-    db.collection(col_name)
-        // In Req.body we will recive the data
-        // from form.
-        .insert(req.body, (err,result) => {
-            if(err) throw err;
-            console.log('data.inserted');
-        })
-    res.redirect('/');
-})
 
-// Delete Selected User
-app.delete('/delete_user',(req,res) => {
-    db.collection(col_name).findOneAndDelete({
-        "name":req.body.name
-    },(err,result) => {
-        if (err) return res.send(500,err)
-        res.send({message: 'success'})
-    })
-})
-
-// Find user by name
-app.post('/find_by_name',(req,res) => {
-    let name = req.body.name;
-    db.collection(col_name)
-      .find({name:name})
-      .toArray((err,result) => {
-          if(err) throw err;
-          res.send(result)
-      })
-});
-
-// Update User
-app.put('/update_user',(req,res)=>{
-    db.collection(col_name)
-        .findOneAndUpdate({"name":req.body.name},{
-            $set:{
-                name:req.body.name,
-                email:req.body.email,
-                phone:req.body.phone
-            }
-        },{
-            upsert:true
-        },(err,result) => {
-            if(err) return res.send(err);
-            res.send(result)
-        })
-})
-
-// Opening Add User page
-app.get('/addUser',(req,res) => {
-    res.render('admin')
-})*/
 
 app.listen(port, ()=> {
     console.log(`Server running on port ${port}`)
