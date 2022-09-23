@@ -1,0 +1,118 @@
+<html>
+    <head>
+        <title>Dashboard</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="js/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <!-- For DataTables -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
+        
+
+    </head>
+    <body>
+        <div class="container">
+                <center>
+                        <div>
+                          <a href="/addBug" class="btn btn-success" role="button">Add new</a>
+                        </div>
+                </center>
+                <h2>List of bugs</h2>
+                <div class="table-responsive">
+                  <table class="table table-hover table-striped" id="myTable">
+                    <caption>List of users</caption>
+                  <thead class = "thead-dark">
+                    <tr>
+                      <th>Title</th>
+                      <th>Description</th>
+                      <th>Date</th>
+                      <th>Assignee</th>
+                      <th>Status</th>
+                      <th>Days left</th>
+                      <th>Action</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                      <% 
+                      
+                      for(var i=0; i<data.length; i++) {
+                        var className = ''
+                        var leftOverDays = 0
+                        if (data[i].status == 'pending' && (moment(data[i].date).add(3, 'days').format('YYYY-MM-DD') >= moment().format('YYYY-MM-DD'))) {
+                          var className = 'table-danger'
+                          var startDate = moment(moment().format('DD.MM.YYYY'), "DD.MM.YYYY");
+                          var endDate = moment(moment(data[i].date).add(3, 'days').format('DD.MM.YYYY'), "DD.MM.YYYY");
+
+                          var leftOverDays = endDate.diff(startDate, 'days');
+                        }
+                      %>
+                  <tr class="<%= className %>">
+                    <td><%= data[i].title %></td>
+                    <td><%= data[i].desc %></td>
+                    <td><%= data[i].date %></td>
+                    <td><%= data[i].assignee %></td>
+                    <td><%= data[i].status %></td>
+                    <td><%= leftOverDays %></td>
+                    <td>
+                      <button type="button" class="update btn btn-warning"
+                       data-toggle="modal" data-target="#myModal" 
+                       id="<%=data[i].title %>">
+                          Edit
+                      </button>
+                        <button type="button" id="<%=data[i].title %>" 
+                          class="delete btn btn-danger" 
+                          value ="<%=data[i].title %>">
+                          delete
+                        </button>
+                    </td>
+                  </tr>
+                <% } %>
+                  </tbody>
+                  
+                </table>
+                <!--  Modal Starts-->
+                <div class="modal fade" id="myModal">
+                      <div class="modal-dialog">
+                          <div class="modal-content">
+                                <!-- Modal Header -->
+                              <div class="modal-header">
+                                  <h4 class="modal-title">Modal Heading</h4>
+                                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                              </div>
+                                
+                              <!-- Modal body -->
+                              <div class="modal-body">
+                                <div class="container">
+                          <h2>Edit Data</h2>
+                          <form action="/update_bug" method="POST" id="update_bug">
+                            
+                            <div class="form-group">
+                              <label for="status">Status:</label>
+                              <select class="form-control" name="status" id="update_status">
+                                <option value="pending">Pending</option>
+                                <option value="resolved">Resolved</option>
+                              </select>
+                            </div>
+                            <input type="hidden" id="title" placeholder="Enter Title" name="title">
+                            
+                          </form>
+                        </div>
+                      </div>
+
+                      <!-- Modal footer -->
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="submit" id="update_table" class="btn btn-primary">update</button>
+                      </div>
+                
+                    </div>
+                  </div>
+                </div>
+        <script type="text/javascript" src="../js/delete.js"></script>
+        <script type="text/javascript" src="../js/update.js"></script>
+    </body>
+</html>
